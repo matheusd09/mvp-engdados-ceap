@@ -15,3 +15,8 @@
 # **
  
 00-preparacao.ipynb
+00_catálogo-de-dados.ipynb
+01_preparacao.ipynb
+02_staging-ceap.ipynb
+03_bronze-layer.ipynb
+04_silver-layer.ipynb
