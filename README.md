@@ -77,7 +77,7 @@ O pipeline segue uma arquitetura em camadas conhecida como **Arquitetura Medalli
 
 ### 4.1 Estrutura (Catalog e Schemas)
 
-O notebook/arquivo [01_preparacao.sql](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/01_preparacao.ipynb) cria o **catalog** e os **schemas** do projeto:
+O notebook/arquivo [01_preparacao](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/01_preparacao.ipynb) cria o **catalog** e os **schemas** do projeto:
 
 - `staging`
 - `layer_bronze`
@@ -92,7 +92,7 @@ O notebook/arquivo [01_preparacao.sql](https://github.com/matheusd09/mvp-engdado
 ## 5. Etapas do pipeline
 
 ### 5.1 Staging — Download e extração do dataset
-Notebook: [02_staging-ceap.ipynb](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/02_staging-ceap.ipynb)
+Notebook: [02_staging-ceap](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/02_staging-ceap.ipynb)
 
 - Cria um **Volume** em `mvp_ed_ceap.staging.staging_data`
 - Baixa o `.zip` diretamente da Câmara (`dbutils.fs.cp`)
@@ -100,7 +100,7 @@ Notebook: [02_staging-ceap.ipynb](https://github.com/matheusd09/mvp-engdados-cea
 - Persiste `.zip` e `.csv` no Volume para rastreabilidade
 
 **Evidências**
-- Output do [02_staging-ceap.ipynb](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/02_staging-ceap.ipynb)
+- Output do [02_staging-ceap](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/02_staging-ceap.ipynb)
 - Volume criado
 - Arquivos `.zip` e `.csv` no DBFS/Volume
 - Amostra do CSV carregado
@@ -111,7 +111,7 @@ Notebook: [02_staging-ceap.ipynb](https://github.com/matheusd09/mvp-engdados-cea
 ---
 
 ### 5.2 Bronze — Ingestão “as-is”
-Notebook: [03_bronze-layer.ipynb](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/03_bronze-layer.ipynb)
+Notebook: [03_bronze-layer](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/03_bronze-layer.ipynb)
 
 - Lê o CSV com `sep=';'`, `header=True`, sem inferência de schema
 - Persiste em Delta como tabela `layer_bronze.bronze_ceap_despesas`
@@ -123,7 +123,7 @@ Notebook: [03_bronze-layer.ipynb](https://github.com/matheusd09/mvp-engdados-cea
 ---
 
 ### 5.3 Silver — Tratamento, tipagem e qualidade
-Notebook: [04_silver-layer.ipynb](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/04_silver-layer.ipynb)
+Notebook: [04_silver-layer](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/04_silver-layer.ipynb)
 
 Principais transformações:
 - Renomeação de colunas (padronização semântica)
@@ -149,7 +149,7 @@ Saída: tabela `layer_silver.silver_ceap_despesas`
 ---
 
 ### 5.4 Gold — Modelo analítico (Esquema Estrela)
-Notebook: [05_gold-layer.ipynb](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/05_gold-layer.ipynb)
+Notebook: [05_gold-layer](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/05_gold-layer.ipynb)
 
 Tabelas do modelo final:
 
@@ -216,13 +216,17 @@ Consultas implementadas:
 ## 9. Organização do repositório
 
 Arquivos principais:
-- `01_preparacao.sql` — Criação de catalog e schemas
-- `02_staging-ceap.py` — Staging (download/extract)
-- `03_bronze-layer.py` — Ingestão Bronze
-- `04_silver-layer.py` — Transformação + qualidade
-- `05_gold-layer.py` — Star schema (Gold)
-- `06_Q&A.py` — Queries de negócio
-- `00_catálogo-de-dados.py` — Catálogo + linhagem
+- [01_preparacao.ipynb](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/01_preparacao.ipynb) — Criação de catalog e schemas
+- [02_staging-ceap.ipynb](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/02_staging-ceap.ipynb) — Staging (download/extract)
+- [03_bronze-layer.ipynb](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/03_bronze-layer.ipynb) — Ingestão Bronze
+- [04_silver-layer.ipynb](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/04_silver-layer.ipynb) — Transformação + qualidade
+- [05_gold-layer.ipynb](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/05_gold-layer.ipynb) — Star schema (Gold)
+- [06_Q&A.ipynb](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/06_Q%26A.ipynb) — Queries de negócio
+- [00_catalogo-de-dados.ipynb](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/00_catalogo-de-dados.ipynb) — Catálogo + linhagem
+- [Documentos](https://github.com/matheusd09/mvp-engdados-ceap/tree/main/Documentos)
+- [Dashboards](https://github.com/matheusd09/mvp-engdados-ceap/tree/main/Dashboards)
+- [Referencias](https://github.com/matheusd09/mvp-engdados-ceap/tree/main/Referencias)
+
 
 ---
 
@@ -231,12 +235,12 @@ Arquivos principais:
 1) Importar/abrir o repositório no Databricks  
 2) Executar na ordem:
 
-- `01_preparacao.sql`
-- `02_staging-ceap`
-- `03_bronze-layer`
-- `04_silver-layer`
-- `05_gold-layer`
-- `06_Q&A`
+- `01_preparacao.ipynb`
+- `02_staging-ceap.ipynb`
+- `03_bronze-layer.ipynb`
+- `04_silver-layer.ipynb`
+- `05_gold-layer.ipynb`
+- `06_Q&A.ipynb`
 
 3) Criar visualizações gráficas no **Databricks Dashboards** utilizando as queries do `06_Q&A`.
 
