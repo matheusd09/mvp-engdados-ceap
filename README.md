@@ -180,7 +180,7 @@ O modelo segue um **Star Schema**, com uma tabela fato central e dimensões desc
 
 ## 7. Catálogo de Dados e Linhagem
 
-Notebook: `00_catálogo-de-dados`
+Notebook: `10_catálogo-de-dados`
 
 O catálogo documenta:
 - Fonte e links oficiais
@@ -222,10 +222,10 @@ Arquivos principais:
 - [04_silver-layer.ipynb](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/04_silver-layer.ipynb) — Transformação + qualidade
 - [05_gold-layer.ipynb](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/05_gold-layer.ipynb) — Star schema (Gold)
 - [06_Q&A.ipynb](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/06_Q%26A.ipynb) — Queries de negócio
-- [00_catalogo-de-dados.ipynb](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/00_catalogo-de-dados.ipynb) — Catálogo + linhagem
-- [Documentos](https://github.com/matheusd09/mvp-engdados-ceap/tree/main/Documentos)
-- [Dashboards](https://github.com/matheusd09/mvp-engdados-ceap/tree/main/Dashboards)
-- [Referencias](https://github.com/matheusd09/mvp-engdados-ceap/tree/main/Referencias)
+- [10_catalogo-de-dados.ipynb](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/10_catalogo-de-dados.ipynb) — Catálogo + linhagem
+- [Documentos](https://github.com/matheusd09/mvp-engdados-ceap/tree/main/Documentos) — Documentos do MVP
+- [Dashboards](https://github.com/matheusd09/mvp-engdados-ceap/tree/main/Dashboards) — Imagens dos Dashboards criados
+- [Referencias](https://github.com/matheusd09/mvp-engdados-ceap/tree/main/Referencias) — Referencias e Amostras
 
 
 ---
