@@ -1,0 +1,337 @@
+{
+  "datasets": [
+    {
+      "name": "1f35ee46",
+      "displayName": "Dash_Gastos_Totais",
+      "queryLines": [
+        "   \n",
+        "--Como os gastos se distribuem ao longo dos meses do ano?\n",
+        "SELECT\n",
+        "  t.ano,\n",
+        "  t.mes,\n",
+        "  SUM(f.valor_documento) AS total_mes\n",
+        "FROM mvp_ed_ceap.layer_gold.fato_despesa_ceap f\n",
+        "JOIN mvp_ed_ceap.layer_gold.dim_tempo t\n",
+        "  ON f.id_tempo = t.id_tempo\n",
+        "GROUP BY t.ano, t.mes\n",
+        "ORDER BY t.ano, t.mes;\n"
+      ]
+    },
+    {
+      "name": "b73e1ef3",
+      "displayName": "Dash_Gastos_Parlamentares",
+      "queryLines": [
+        "--Quais parlamentares apresentam os maiores volumes de despesas?\n",
+        "SELECT\n",
+        "  p.nome_parlamentar,\n",
+        "  SUM(f.valor_documento) AS total_gasto\n",
+        "FROM mvp_ed_ceap.layer_gold.fato_despesa_ceap f\n",
+        "JOIN mvp_ed_ceap.layer_gold.dim_parlamentar p\n",
+        "  ON f.id_parlamentar = p.id_parlamentar\n",
+        "GROUP BY p.nome_parlamentar\n",
+        "ORDER BY total_gasto DESC\n",
+        "LIMIT 20;\n"
+      ]
+    },
+    {
+      "name": "994176ea",
+      "displayName": "Dash_Gastos_UF",
+      "queryLines": [
+        "--Como os gastos se distribuem entre as UFs?\n",
+        "SELECT\n",
+        "  u.sigla_uf,\n",
+        "  SUM(f.valor_documento) AS total_gasto\n",
+        "FROM mvp_ed_ceap.layer_gold.fato_despesa_ceap f\n",
+        "JOIN mvp_ed_ceap.layer_gold.dim_uf u\n",
+        "  ON f.id_uf = u.id_uf\n",
+        "GROUP BY u.sigla_uf\n",
+        "ORDER BY total_gasto DESC;\n"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "name": "a522b47c",
+      "displayName": "Visualizações",
+      "layout": [
+        {
+          "widget": {
+            "name": "ee72f80b",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "1f35ee46",
+                  "fields": [
+                    {
+                      "name": "mes",
+                      "expression": "`mes`"
+                    },
+                    {
+                      "name": "sum(total_mes)",
+                      "expression": "SUM(`total_mes`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "mes",
+                  "axis": {
+                    "title": "Mês"
+                  },
+                  "displayName": "Mês",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "sum(total_mes)",
+                  "axis": {
+                    "title": "Valor gasto / mês em Milhões"
+                  },
+                  "displayName": "Valor gasto / mês em Milhões",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "frame": {
+                "title": "Gastos Totais",
+                "showTitle": true
+              },
+              "mark": {
+                "layout": "group"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "265abc62",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "b73e1ef3",
+                  "fields": [
+                    {
+                      "name": "sum(total_gasto)",
+                      "expression": "SUM(`total_gasto`)"
+                    },
+                    {
+                      "name": "nome_parlamentar",
+                      "expression": "`nome_parlamentar`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "sum(total_gasto)",
+                  "axis": {
+                    "title": "Gasto"
+                  },
+                  "displayName": "Valor gasto",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "nome_parlamentar",
+                  "axis": {
+                    "title": "Parlamentar"
+                  },
+                  "displayName": "Parlamentar",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "label": {
+                  "show": false
+                }
+              },
+              "frame": {
+                "title": "Gastos Por Parlamentar",
+                "showTitle": true
+              },
+              "mark": {
+                "layout": "group"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 0,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "1a45d535",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "994176ea",
+                  "fields": [
+                    {
+                      "name": "sum(total_gasto)",
+                      "expression": "SUM(`total_gasto`)"
+                    },
+                    {
+                      "name": "sigla_uf",
+                      "expression": "`sigla_uf`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "pie",
+              "encodings": {
+                "angle": {
+                  "fieldName": "sum(total_gasto)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Gasto por Estado"
+                },
+                "color": {
+                  "fieldName": "sigla_uf",
+                  "displayName": "UF",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "label": {
+                  "show": true,
+                  "text": {
+                    "fieldName": "sum(total_gasto)",
+                    "format": {
+                      "type": "number-currency",
+                      "currencyCode": "BRL",
+                      "abbreviation": "compact",
+                      "decimalPlaces": {
+                        "type": "all"
+                      },
+                      "significantFigures": {
+                        "type": "exact",
+                        "figures": 3
+                      },
+                      "hideGroupSeparator": false
+                    },
+                    "displayName": "Gasto por Estado"
+                  }
+                }
+              },
+              "mark": {
+                "layout": "stack"
+              },
+              "frame": {
+                "title": "Gastos por Unidade Federativa (UF)",
+                "showTitle": true
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 6,
+            "width": 6,
+            "height": 8
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS"
+    },
+    {
+      "name": "63e6ea8d",
+      "displayName": "Global Filters",
+      "layout": [
+        {
+          "widget": {
+            "name": "ac31f52b",
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-single-select",
+              "encodings": {},
+              "frame": {
+                "showTitle": true
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "7e39d1c2",
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-single-select",
+              "encodings": {},
+              "frame": {
+                "showTitle": true
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "ce3fbdf8",
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-single-select",
+              "encodings": {},
+              "frame": {
+                "showTitle": true
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 4,
+            "width": 1,
+            "height": 2
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_GLOBAL_FILTERS"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
+    },
+    "applyModeEnabled": false
+  }
+}
