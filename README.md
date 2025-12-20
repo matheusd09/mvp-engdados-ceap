@@ -2,9 +2,9 @@
 
 Este repositório contém o MVP da disciplina de **Engenharia de Dados**, desenvolvido na plataforma Databricks, com um pipeline de ponta a ponta (busca → coleta → modelagem → carga → análise), utilizando dados públicos da **Cota para o Exercício da Atividade Parlamentar (CEAP)**.
 
-> **Tema:** Transparência e análise de gastos públicos (CEAP)  
-> **Plataforma:** Databricks (Delta Lake + Spark + SQL + Dashboards)  
-> **Modelo analítico:** Esquema Estrela (Star Schema)
+**Tema:** Transparência e análise de gastos públicos (CEAP)  
+**Plataforma:** Databricks (Delta Lake + Spark + SQL + Dashboards)  
+**Modelo analítico:** Esquema Estrela (Star Schema)
 
 ---
 
@@ -60,14 +60,16 @@ Embora os dados da CEAP sejam públicos, eles são disponibilizados de forma **b
 
 ---
 
-## 3. Arquitetura do pipeline (Databricks)
+## 3. Arquitetura do pipeline
 
-O pipeline segue uma arquitetura em camadas:
+O pipeline segue uma arquitetura em camadas conhecida como **Arquitetura Medallion**:
 
 - **Staging**: Download + extração + armazenamento do arquivo original (zip) e extraído (csv) em um Volume do Unity Catalog.
 - **Bronze**: Ingestão dos dados **crus**, preservando a granularidade original.
 - **Silver**: Limpeza, padronização textual, conversão de tipos (datas, decimais), criação de campos auxiliares e checagens de qualidade.
 - **Gold**: Modelagem analítica em **Esquema Estrela** para consultas simples e consistentes.
+
+![medallion architecture](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/Documentos/medallion_architecture.png)
 
 ---
 
@@ -75,7 +77,7 @@ O pipeline segue uma arquitetura em camadas:
 
 ### 4.1 Estrutura (Catalog e Schemas)
 
-O notebook/arquivo `01_preparacao.sql` cria o **catalog** e os **schemas** do projeto:
+O notebook/arquivo [01_preparacao.sql](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/01_preparacao.ipynb) cria o **catalog** e os **schemas** do projeto:
 
 - `staging`
 - `layer_bronze`
@@ -84,29 +86,32 @@ O notebook/arquivo `01_preparacao.sql` cria o **catalog** e os **schemas** do pr
 
 > Observação: por simplicidade de reprodução, o script remove e recria o catálogo.
 
+![Staging_Volume](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/Documentos/Volumes_e_Schemas.png)
 ---
 
 ## 5. Etapas do pipeline
 
 ### 5.1 Staging — Download e extração do dataset
-Notebook: `02_staging-ceap`
+Notebook: [02_staging-ceap.ipynb](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/02_staging-ceap.ipynb)
 
 - Cria um **Volume** em `mvp_ed_ceap.staging.staging_data`
 - Baixa o `.zip` diretamente da Câmara (`dbutils.fs.cp`)
 - Lê o binário e extrai o `.csv`
 - Persiste `.zip` e `.csv` no Volume para rastreabilidade
 
-**Evidências sugeridas (screenshot):**
-![](path)
+**Evidências**
+- Output do [02_staging-ceap.ipynb](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/02_staging-ceap.ipynb)
 - Volume criado
 - Arquivos `.zip` e `.csv` no DBFS/Volume
 - Amostra do CSV carregado
+  
+![Staging_Volume](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/Documentos/staging_volume.png)
 
 
 ---
 
 ### 5.2 Bronze — Ingestão “as-is”
-Notebook: `03_bronze-layer`
+Notebook: [03_bronze-layer.ipynb](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/03_bronze-layer.ipynb)
 
 - Lê o CSV com `sep=';'`, `header=True`, sem inferência de schema
 - Persiste em Delta como tabela `layer_bronze.bronze_ceap_despesas`
@@ -118,7 +123,7 @@ Notebook: `03_bronze-layer`
 ---
 
 ### 5.3 Silver — Tratamento, tipagem e qualidade
-Notebook: `04_silver-layer`
+Notebook: [04_silver-layer.ipynb](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/04_silver-layer.ipynb)
 
 Principais transformações:
 - Renomeação de colunas (padronização semântica)
@@ -144,7 +149,7 @@ Saída: tabela `layer_silver.silver_ceap_despesas`
 ---
 
 ### 5.4 Gold — Modelo analítico (Esquema Estrela)
-Notebook: `05_gold-layer`
+Notebook: [05_gold-layer.ipynb](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/05_gold-layer.ipynb)
 
 Tabelas do modelo final:
 
@@ -165,11 +170,11 @@ A tabela fato inclui:
 
 ---
 
-## 6. Modelo de dados (Diagrama)
+## 6. Modelo de dados
 
 O modelo segue um **Star Schema**, com uma tabela fato central e dimensões descritivas.
 
-![Diagrama do Modelo](Diagrama.png)
+![Diagrama-Esquema-Estrela](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/Documentos/Diagrama.png)
 
 ---
 
