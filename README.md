@@ -1,66 +1,75 @@
-# MVP Engenharia de Dados — CEAP
+# MVP Engenharia de Dados:
+## Transparência e análise de gastos públicos - CEAP
 
-Este repositório contém o MVP da disciplina de **Engenharia de Dados**, desenvolvido na plataforma Databricks, com um pipeline de ponta a ponta (busca → coleta → modelagem → carga → análise), utilizando dados públicos da **Cota para o Exercício da Atividade Parlamentar (CEAP)**.
+Este repositório contém o **MVP da Sprint de Engenharia de Dados** da turma de **Especialização em Ciência de Dados e Analytics — PUC-Rio**, utilizando dados públicos e abertos da **Cota para o Exercício da Atividade Parlamentar (CEAP)** para criar um pipeline de ponta a ponta, para análises precisas baseadas em dados:
+>#####`(busca → coleta → modelagem → carga → análise)`
 
-**Tema:** Transparência e análise de gastos públicos (CEAP)  
-**Plataforma:** Databricks (Delta Lake + Spark + SQL + Dashboards)  
-**Modelo analítico:** Esquema Estrela (Star Schema)
+- **Tema:** Transparência e análise de gastos públicos (CEAP)  
+- **Plataforma:** Databricks Free Edition (Delta Lake + Spark + SQL + Dashboards)  
+- **Arquitetura:** Medallion (Staging → Bronze → Silver → Gold)  
+- **Linguagens:** Python (via PySpark) + SQL  
+- **Modelo analítico:** Esquema Estrela (Star Schema)  
+- **Entrega:** Repositório GitHub com notebooks, documentação e evidências visuais
+
+
+---
+## Índice
+
+- [Objetivo → Contexto e Problema](#objetivo)
+- [Escopo do MVP](#escopo-do-mvp)
+- [Perguntas de negócio](#perguntas-de-negócio)
+- [Fonte de dados](#2-fonte-de-dados)
+- [Arquitetura do pipeline](#3-arquitetura-do-pipeline)
+- [Preparação do ambiente (Databricks)](#4-preparação-do-ambiente-databricks)
+- [Etapas do pipeline](#5-etapas-do-pipeline)
+- [Modelo de dados](#6-modelo-de-dados)
+- [Catálogo de Dados e Linhagem](#7-catálogo-de-dados-e-linhagem)
+- [Análises (SQL) — Respostas às perguntas do MVP](#8-análises-sql--respostas-às-perguntas-do-mvp)
+- [Organização do repositório](#9-organização-do-repositório)
+- [Execução do MVP](#10-execução-do-mvp)
+- [Autoavaliação](#11-autoavaliação)
+- [Licença e créditos](#12-licença-e-créditos)
 
 ---
 
-## 1. Objetivo do MVP
+### Objetivo
 
-Construir um **pipeline de dados em nuvem**, reprodutível e documentado, capaz de:
-- Coletar os dados oficiais da CEAP,
-- Persistir os dados em camadas **Bronze → Silver → Gold**,
-- Modelar os dados em **Esquema Estrela** (fato + dimensões),
-- Avaliar **qualidade de dados** por atributo,
-- Responder perguntas analíticas via **SQL** (e/ou visualizações).
+#### Escopo do MVP  
 
-### 1.1 Problema a ser resolvido
+Este projeto contempla:
+- A coleta e armazenamento dos dados oficiais da CEAP.
+- A construção de um pipeline de dados seguindo a arquitetura Medallion.
+- A modelagem dos dados em formato analítico, **Esquema Estrela** (fato + dimensões).
+- A análise e avaliação de **qualidade de dados**.
+- A resposta às perguntas de negócio por meio de SQL no Databricks, complementada por visualizações analíticas
 
-Embora os dados da CEAP sejam públicos, eles são disponibilizados de forma **bruta** (arquivos CSV por ano, com campos tipados como texto e inconsistências esperadas). Para permitir análises confiáveis e rápidas, é necessário **organizar, padronizar e modelar** o conjunto de dados.
+#### Contexto e Problema a ser resolvido
 
-### 1.2 Perguntas que o MVP deve responder
+A **Cota para o Exercício da Atividade Parlamentar (CEAP)** representa uma parcela significativa dos gastos públicos destinados ao funcionamento do Poder Legislativo. Apesar de os dados serem públicos, seu volume, granularidade e formato dificultam análises consolidadas que permitam avaliar padrões de gastos, identificar concentrações relevantes e compreender a distribuição dos recursos ao longo do tempo, por partido político e por tipo de despesa.
 
-**Padrões gerais de gasto**
-- Qual é o valor total gasto pela CEAP no período analisado?
-- Qual é o gasto médio mensal por parlamentar?
-- Como os gastos se distribuem ao longo dos meses do ano?
+Diante desse contexto, este MVP tem como objetivo construir um pipeline de dados em nuvem, utilizando a plataforma Databricks Free Edition, capaz de coletar, modelar, transformar e analisar os dados da CEAP, gerando informações analíticas que apoiem a transparência pública e a tomada de decisão baseada em dados.
 
-**Análise por parlamentar**
-- Quais parlamentares apresentam os maiores volumes de despesas?
-- Existe grande variação de gastos entre parlamentares?
-
-**Análise por tipo de despesa**
-- Quais tipos de despesa concentram a maior parte dos gastos da CEAP?
-
-**Análise por partido político**
-- Qual é o gasto médio por partido político?
-- A composição de gastos varia entre partidos?
-
-**Análise geográfica (UF)**
-- Como os gastos se distribuem entre as UFs?
-
-**Análise temporal**
-- Há meses com picos atípicos de despesas?
-
-> As perguntas acima estão implementadas no notebook **06_Q&A**.
 
 ---
 
-## 2. Fonte de dados
+### Fonte de dados, Catálogo e Linhagem
+Notebook: [10_catálogo-de-dados]((https://github.com/matheusd09/mvp-engdados-ceap/blob/main/10_catalogo-de-dados.md)  
 
-**Fontes oficiais (Câmara dos Deputados):**
-- Swagger / Static Files: https://dadosabertos.camara.leg.br/swagger/api.html?tab=staticfile
-- Documentação CEAP: https://dadosabertos.camara.leg.br/howtouse/2023-12-26-dados-ceap.html
-- Dataset utilizado neste MVP (exemplo): https://www.camara.leg.br/cotas/Ano-2024.csv.zip
+Os dados utilizados neste projeto são provenientes da Cota para o Exercício da Atividade Parlamentar (CEAP), disponibilizados publicamente pela Câmara dos Deputados por meio do Portal da Transparência.  
+Os dados foram obtidos em formato CSV.zip e referem-se ao ano de 2024.
 
-**Formato de ingestão:** CSV (dentro de .zip), separado por `;`.
+O catálogo documenta:
+- Fonte e links oficiais
+- Frequência de atualização
+- Linhagem (Staging → Bronze → Silver → Gold)
+- Descrição das tabelas (fato e dimensões)
+- Tipos e domínios esperados
+
+Informações detalhadas no [Catálogo de Dados](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/10_catalogo-de-dados.md)
 
 ---
 
-## 3. Arquitetura do pipeline
+### Arquitetura da Solução
 
 O pipeline segue uma arquitetura em camadas conhecida como **Arquitetura Medallion**:
 
@@ -73,11 +82,11 @@ O pipeline segue uma arquitetura em camadas conhecida como **Arquitetura Medalli
 
 ---
 
-## 4. Preparação do ambiente (Databricks)
+### Preparação do ambiente (Databricks)
 
-### 4.1 Estrutura (Catalog e Schemas)
+#### Estrutura (Catalog e Schemas)
 
-O notebook/arquivo [01_preparacao](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/01_preparacao.ipynb) cria o **catalog** e os **schemas** do projeto:
+O notebook [01_preparacao](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/01_preparacao.ipynb) cria os **catalogs** e **schemas** do projeto:
 
 - `staging`
 - `layer_bronze`
@@ -89,40 +98,27 @@ O notebook/arquivo [01_preparacao](https://github.com/matheusd09/mvp-engdados-ce
 ![Staging_Volume](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/Documentos/Volumes_e_Schemas.png)
 ---
 
-## 5. Etapas do pipeline
+## Etapas do Pipeline ETL
 
-### 5.1 Staging — Download e extração do dataset
+### Staging — Download e extração do dataset
 Notebook: [02_staging-ceap](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/02_staging-ceap.ipynb)
 
 - Cria um **Volume** em `mvp_ed_ceap.staging.staging_data`
 - Baixa o `.zip` diretamente da Câmara (`dbutils.fs.cp`)
 - Lê o binário e extrai o `.csv`
 - Persiste `.zip` e `.csv` no Volume para rastreabilidade
+- Evidências nos outputs do Notebook.  
 
-**Evidências**
-- Output do [02_staging-ceap](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/02_staging-ceap.ipynb)
-- Volume criado
-- Arquivos `.zip` e `.csv` no DBFS/Volume
-- Amostra do CSV carregado
-  
 ![Staging_Volume](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/Documentos/staging_volume.png)
-
-
----
-
-### 5.2 Bronze — Ingestão “as-is”
+-------------------------
+### Bronze — Ingestão “as-is”
 Notebook: [03_bronze-layer](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/03_bronze-layer.ipynb)
 
 - Lê o CSV com `sep=';'`, `header=True`, sem inferência de schema
 - Persiste em Delta como tabela `layer_bronze.bronze_ceap_despesas`
 
-**Evidências sugeridas (screenshot):**
-- `display(df_bronze.limit(10))`
-- tabela Delta criada no catálogo
 
----
-
-### 5.3 Silver — Tratamento, tipagem e qualidade
+### Silver — Tratamento, tipagem e qualidade
 Notebook: [04_silver-layer](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/04_silver-layer.ipynb)
 
 Principais transformações:
@@ -146,56 +142,97 @@ Saída: tabela `layer_silver.silver_ceap_despesas`
 
 > Importante: no MVP, outliers e duplicidades **são identificados**, mas fazem parte das análises e não necessariamente removidos (decisão documentada).
 
----
-
-### 5.4 Gold — Modelo analítico (Esquema Estrela)
+### Gold — Modelo analítico (Esquema Estrela)
 Notebook: [05_gold-layer](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/05_gold-layer.ipynb)
 
-Tabelas do modelo final:
+**Tabela Fato:**  
+> **`fato_despesa_ceap`**   
 
-**Fato**
-- `layer_gold.fato_despesa_ceap`
+>> A tabela fato inclui:
+>> - `id_documento` (identificador do documento)
+>> - FKs para dimensões (`id_parlamentar`, `id_tempo`, `id_tipo_despesa`, `id_partido`, `id_uf`)
+>> - Métricas monetárias (`valor_documento`, `valor_glosa`, `valor_liquido`)
 
-**Dimensões**
-- `layer_gold.dim_parlamentar`
-- `layer_gold.dim_tempo`
-- `layer_gold.dim_tipo_despesa`
-- `layer_gold.dim_partido`
-- `layer_gold.dim_uf`
-
-A tabela fato inclui:
-- `id_documento` (identificador do documento)
-- FKs para dimensões (`id_parlamentar`, `id_tempo`, `id_tipo_despesa`, `id_partido`, `id_uf`)
-- Métricas monetárias (`valor_documento`, `valor_glosa`, `valor_liquido`)
+**Dimensões**: 
+- **`dim_parlamentar`**
+- **`dim_tempo`**
+- **`dim_tipo_despesa`**
+- **`dim_partido`**
+- **`dim_uf`**
 
 ---
 
-## 6. Modelo de dados
+### Modelo de dados
 
-O modelo segue um **Star Schema**, com uma tabela fato central e dimensões descritivas.
+O modelo segue um **Esquema Estrela** (Star Schema), com uma tabela fato central e dimensões descritivas.
 
 ![Diagrama-Esquema-Estrela](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/Documentos/Diagrama.png)
 
+```mermaid
+erDiagram
+    FATO_DESPESA_CEAP {
+        string  id_documento
+        int     id_parlamentar
+        int     id_tempo
+        int     id_tipo_despesa
+        string  id_partido
+        string  id_uf
+        decimal valor_documento
+        decimal valor_glosa
+        decimal valor_liquido
+    }
+
+    DIM_PARLAMENTAR {
+        int     id_parlamentar
+        string  nome_parlamentar
+        string  sigla_partido
+        string  sigla_uf
+        int     num_legislatura
+    }
+
+    DIM_TEMPO {
+        int     id_tempo
+        date    data
+        int     ano
+        int     mes
+        int     trimestre
+        string  nome_mes
+    }
+
+    DIM_TIPO_DESPESA {
+        int     id_tipo_despesa
+        string  descricao_tipo_despesa
+        int     id_especificacao_tipo
+        string  descricao_especificacao_tipo
+    }
+
+    DIM_PARTIDO {
+        string  id_partido
+        string  sigla_partido
+    }
+
+    DIM_UF {
+        string  id_uf
+        string  sigla_uf
+    }
+
+    DIM_PARLAMENTAR ||--o{ FATO_DESPESA_CEAP : id_parlamentar
+    DIM_TEMPO ||--o{ FATO_DESPESA_CEAP : id_tempo
+    DIM_TIPO_DESPESA ||--o{ FATO_DESPESA_CEAP : id_tipo_despesa
+    DIM_PARTIDO ||--o{ FATO_DESPESA_CEAP : id_partido
+    DIM_UF ||--o{ FATO_DESPESA_CEAP : id_uf
+```
+
 ---
 
-## 7. Catálogo de Dados e Linhagem
+## Análises (SQL) — Respostas às perguntas do MVP
 
-Notebook: `10_catálogo-de-dados`
+Notebook Perguntas e Respostas: [06_Q&A](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/06_Q%26A.ipynb)  
+Dashboards: [Databricks Dashboard-Json](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/06_Q%26A_Dashboards.lvdash.json)  
+Dashboards: [Markdown](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/06_Q%26A_Dashboards.md)  
+Dashboards: [Prints](https://github.com/matheusd09/mvp-engdados-ceap/tree/main/Dashboards)  
 
-O catálogo documenta:
-- Fonte e links oficiais
-- Frequência de atualização
-- Linhagem (Staging → Bronze → Silver → Gold)
-- Descrição das tabelas (fato e dimensões)
-- Tipos e domínios esperados
-
----
-
-## 8. Análises (SQL) — Respostas às perguntas do MVP
-
-Notebook: `06_Q&A`
-
-Consultas implementadas:
+**Consultas implementadas:**
 - Total de gastos no período
 - Gasto médio por parlamentar
 - Distribuição mensal (ano/mês)
@@ -207,14 +244,39 @@ Consultas implementadas:
 - Gastos por UF
 - Meses com maiores gastos (picos)
 
-**Evidências**
-- Resultado de cada query principal
-- Databricks SQL Dashboard com filtros
-
 ---
 
-## 9. Organização do repositório
+## Organização do repositório e Estrutura do Projeto
 
+```
+mvp-engdados-ceap/
+├── README.md                             # Descrição geral do projeto
+│
+├── .databricks/                         # Metadados internos do Databricks
+│   └── commit_outputs/                  # Saídas automáticas de commits
+│
+├── 01_preparacao.ipynb                  # Preparação do ambiente e schemas
+├── 02_staging-ceap.ipynb                # Ingestão do CSV para área de staging
+├── 03_bronze-layer.ipynb                # Persistência dos dados brutos (Bronze)
+├── 04_silver-layer.ipynb                # Tratamento técnico e padronização (Silver)
+├── 05_gold-layer.ipynb                  # Camada analítica para consumo (Gold)
+├── 06_Q&A.ipynb                         # Consultas analíticas e respostas de negócio
+├── 06_Q&A_Dashboards.lvdash.json        # Definição dos dashboards no Databricks
+├── 06_Q&A_Dashboards.md                 # Prints dos dashboards
+├── 10_catalogo-de-dados.md              # Catálogo oficial de dados
+├── 11_Auto_avaliacao.md                 # Auto avaliação
+│
+├── Dashboards/                          # Evidências visuais das análises
+│
+├── Documentos/                          # Documentação e evidências técnicas
+│   ├── Diagrama.png                     # Diagrama da modelagem de dados
+│   ├── Volumes_e_Schemas.png            # Evidência de volumes e schemas
+│   ├── medallion_architecture.png       # Arquitetura Medallion do projeto
+│   └── staging_volume.png               # Evidência da área de staging
+│
+├── Referencias/                         # Dados de referência
+    └── Ano-2024.csv                     # Dataset original da CEAP
+```
 Arquivos principais:
 - [01_preparacao.ipynb](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/01_preparacao.ipynb) — Criação de catalog e schemas
 - [02_staging-ceap.ipynb](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/02_staging-ceap.ipynb) — Staging (download/extract)
@@ -226,11 +288,15 @@ Arquivos principais:
 - [Documentos](https://github.com/matheusd09/mvp-engdados-ceap/tree/main/Documentos) — Documentos do MVP
 - [Dashboards](https://github.com/matheusd09/mvp-engdados-ceap/tree/main/Dashboards) — Imagens dos Dashboards criados
 - [Referencias](https://github.com/matheusd09/mvp-engdados-ceap/tree/main/Referencias) — Referencias e Amostras
+---
 
+## Autoavaliação
+
+Notebook: [11_Auto_avaliacao](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/11_Auto_avaliacao.md)
 
 ---
 
-## 10. Execução do MVP
+## Execução do Projeto
 
 1) Importar/abrir o repositório no Databricks  
 2) Executar na ordem:
@@ -245,31 +311,3 @@ Arquivos principais:
 3) Criar visualizações gráficas no **Databricks Dashboards** utilizando as queries do `06_Q&A`.
 
 ---
-
-## 11. Autoavaliação
-
-**O que foi atingido**
-- Pipeline completo em nuvem com camadas Bronze/Silver/Gold
-- Modelagem em Esquema Estrela
-- Catálogo de dados e linhagem
-- Análise de qualidade por atributo
-- Respostas SQL para perguntas do objetivo
-
-**Dificuldades**
-- Padronização e tipagem dos dados (datas/decimais)
-- Tratamento de possíveis duplicidades lógicas
-- Definição de domínios/categorias para campos textuais
-
-**Trabalhos futuros**
-- Ingestão de múltiplos anos (ex.: 2019–2024) com orquestração
-- Incremental load (merge) e particionamento por data/ano
-- Enriquecimento com dados de deputados (API REST) e partidos oficiais (nome completo)
-- Dashboards com filtros e KPIs (Top N, séries temporais, outliers)
-- Testes automatizados de qualidade (expectations) e alertas
-
----
-
-## 12. Licença e créditos
-
-Dados: Câmara dos Deputados (Dados Abertos).  
-Uso educacional e acadêmico.
