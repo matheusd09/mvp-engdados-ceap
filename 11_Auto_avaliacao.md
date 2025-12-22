@@ -1,4 +1,4 @@
-#📝 Autoavaliação
+# 📝Autoavaliação
 
 O desenvolvimento deste MVP permitiu a aplicação prática dos principais conceitos da **Sprint: Engenharia de Dados** e as disciplinas estudadas: **Banco de Dados, Data Warehouse e Data Lake, Gestão e Governança de Dados**.  
 

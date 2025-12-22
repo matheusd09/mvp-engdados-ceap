@@ -24,8 +24,8 @@ Este repositório contém o **MVP da Sprint de Engenharia de Dados** da turma de
 - [Etapas do Pipeline ETL](#etapas-do-pipeline-etl)
 - [Modelo de dados](#modelo-de-dados)
 - [Análises (SQL) — Respostas às perguntas do MVP](#análises-sql--respostas-às-perguntas-do-mvp)
-- [Organização do repositório e Estrutura do Projeto](#organização-do-repositório-e-estrutura-do-projeto)
 - [Autoavaliação](#autoavaliação)
+- [Organização do repositório e Estrutura do Projeto](#organização-do-repositório-e-estrutura-do-projeto)
 - [Execução do Projeto](#execução-do-projeto)
 
 ---
@@ -51,7 +51,7 @@ Diante desse contexto, este MVP tem como objetivo construir um pipeline de dados
 ---
 
 ### Fonte de dados, Catálogo e Linhagem
-Notebook: [10_catálogo-de-dados]((https://github.com/matheusd09/mvp-engdados-ceap/blob/main/10_catalogo-de-dados.md)  
+Notebook: [10_catálogo-de-dados](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/10_catalogo-de-dados.md)  
 
 Os dados utilizados neste projeto são provenientes da Cota para o Exercício da Atividade Parlamentar (CEAP), disponibilizados publicamente pela Câmara dos Deputados por meio do Portal da Transparência.  
 Os dados foram obtidos em formato CSV.zip e referem-se ao ano de 2024.
@@ -63,7 +63,7 @@ O catálogo documenta:
 - Descrição das tabelas (fato e dimensões)
 - Tipos e domínios esperados
 
-Informações detalhadas no [Catálogo de Dados](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/10_catalogo-de-dados.md)
+>Informações detalhadas no [Catálogo de Dados](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/10_catalogo-de-dados.md)
 
 ---
 
@@ -144,7 +144,7 @@ Saída: tabela `layer_silver.silver_ceap_despesas`
 Notebook: [05_gold-layer](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/05_gold-layer.ipynb)
 
 **Tabela Fato:**  
-> **`fato_despesa_ceap`**   
+  **`fato_despesa_ceap`**   
 
 >> A tabela fato inclui:
 >> - `id_documento` (identificador do documento)
@@ -242,6 +242,12 @@ Dashboards: [Prints](https://github.com/matheusd09/mvp-engdados-ceap/tree/main/D
 
 ---
 
+## Autoavaliação
+
+Notebook: [11_Auto_avaliacao](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/11_Auto_avaliacao.md)
+
+---
+
 ## Organização do repositório e Estrutura do Projeto
 
 ```
@@ -274,21 +280,18 @@ mvp-engdados-ceap/
     └── Ano-2024.csv                     # Dataset original da CEAP
 ```
 Arquivos principais:
+- [README.md](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/README.md) — Estrutura do Projeto
 - [01_preparacao.ipynb](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/01_preparacao.ipynb) — Criação de catalog e schemas
 - [02_staging-ceap.ipynb](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/02_staging-ceap.ipynb) — Staging (download/extract)
 - [03_bronze-layer.ipynb](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/03_bronze-layer.ipynb) — Ingestão Bronze
 - [04_silver-layer.ipynb](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/04_silver-layer.ipynb) — Transformação + qualidade
 - [05_gold-layer.ipynb](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/05_gold-layer.ipynb) — Star schema (Gold)
 - [06_Q&A.ipynb](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/06_Q%26A.ipynb) — Queries de negócio
-- [10_catalogo-de-dados.ipynb](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/10_catalogo-de-dados.ipynb) — Catálogo + linhagem
+- [10_catalogo-de-dados.md](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/10_catalogo-de-dados.md) — Catálogo + linhagem
+- [11_Auto_avaliacao.md](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/11_Auto_avaliacao.md) — Auto Avaliação
 - [Documentos](https://github.com/matheusd09/mvp-engdados-ceap/tree/main/Documentos) — Documentos do MVP
 - [Dashboards](https://github.com/matheusd09/mvp-engdados-ceap/tree/main/Dashboards) — Imagens dos Dashboards criados
 - [Referencias](https://github.com/matheusd09/mvp-engdados-ceap/tree/main/Referencias) — Referencias e Amostras
----
-
-## Autoavaliação
-
-Notebook: [11_Auto_avaliacao](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/11_Auto_avaliacao.md)
 
 ---
 

@@ -37,7 +37,7 @@ Este catálogo provê documentação técnica para os conjuntos de dados utiliza
 - Na **camada Silver**, os dados passam por processos de limpeza, padronização de tipos (datas, valores numéricos e campos categóricos), tratamento de valores nulos e registros de inconsistências.  
 - Na **camada Gold**, os dados foram reorganizados em modelo analítico no Esquema Estrela, composto por uma tabela fato e tabelas dimensão, visando facilitar análises e consultas analíticas.  
 
-> ```
+```
 Fonte Oficial (CSV/ZIP)
         ↓
 Staging (Volume / DBFS)
@@ -49,7 +49,7 @@ Silver (Delta Lake – tipagem, limpeza, qualidade)
 Gold (Delta Lake – modelo estrela analítico)
         ↓
 Visualização (Dashboards)        
-> ```
+```
 
 ---
 
