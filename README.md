@@ -15,20 +15,18 @@ Este repositório contém o **MVP da Sprint de Engenharia de Dados** da turma de
 ---
 ## Índice
 
-- [Objetivo → Contexto e Problema](#objetivo)
-- [Escopo do MVP](#escopo-do-mvp)
-- [Perguntas de negócio](#perguntas-de-negócio)
-- [Fonte de dados](#2-fonte-de-dados)
-- [Arquitetura do pipeline](#3-arquitetura-do-pipeline)
-- [Preparação do ambiente (Databricks)](#4-preparação-do-ambiente-databricks)
-- [Etapas do pipeline](#5-etapas-do-pipeline)
-- [Modelo de dados](#6-modelo-de-dados)
-- [Catálogo de Dados e Linhagem](#7-catálogo-de-dados-e-linhagem)
-- [Análises (SQL) — Respostas às perguntas do MVP](#8-análises-sql--respostas-às-perguntas-do-mvp)
-- [Organização do repositório](#9-organização-do-repositório)
-- [Execução do MVP](#10-execução-do-mvp)
-- [Autoavaliação](#11-autoavaliação)
-- [Licença e créditos](#12-licença-e-créditos)
+- [Objetivo](#objetivo)
+    - [Escopo do MVP](#escopo-do-mvp)
+    - [Contexto e Problema a ser resolvido](#contexto-e-problema-a-ser-resolvido)
+- [Fonte de dados, Catálogo e Linhagem](#fonte-de-dados-catálogo-e-linhagem)
+- [Arquitetura da Solução](#arquitetura-da-solução)
+- [Preparação do ambiente (Databricks)](#preparação-do-ambiente-databricks)
+- [Etapas do Pipeline ETL](#etapas-do-pipeline-etl)
+- [Modelo de dados](#modelo-de-dados)
+- [Análises (SQL) — Respostas às perguntas do MVP](#análises-sql--respostas-às-perguntas-do-mvp)
+- [Organização do repositório e Estrutura do Projeto](#organização-do-repositório-e-estrutura-do-projeto)
+- [Autoavaliação](#autoavaliação)
+- [Execução do Projeto](#execução-do-projeto)
 
 ---
 
@@ -166,8 +164,6 @@ Notebook: [05_gold-layer](https://github.com/matheusd09/mvp-engdados-ceap/blob/m
 
 O modelo segue um **Esquema Estrela** (Star Schema), com uma tabela fato central e dimensões descritivas.
 
-![Diagrama-Esquema-Estrela](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/Documentos/Diagrama.png)
-
 ```mermaid
 erDiagram
     FATO_DESPESA_CEAP {
@@ -228,8 +224,8 @@ erDiagram
 ## Análises (SQL) — Respostas às perguntas do MVP
 
 Notebook Perguntas e Respostas: [06_Q&A](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/06_Q%26A.ipynb)  
-Dashboards: [Databricks Dashboard-Json](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/06_Q%26A_Dashboards.lvdash.json)  
-Dashboards: [Markdown](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/06_Q%26A_Dashboards.md)  
+Dashboards: [Databricks Dashboard-Json](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/Dashboards/06_Q%26A_Dashboards.lvdash.json)  
+Dashboards: [Markdown](https://github.com/matheusd09/mvp-engdados-ceap/blob/main/Dashboards/06_Q%26A_Dashboards.md)  
 Dashboards: [Prints](https://github.com/matheusd09/mvp-engdados-ceap/tree/main/Dashboards)  
 
 **Consultas implementadas:**
@@ -261,12 +257,12 @@ mvp-engdados-ceap/
 ├── 04_silver-layer.ipynb                # Tratamento técnico e padronização (Silver)
 ├── 05_gold-layer.ipynb                  # Camada analítica para consumo (Gold)
 ├── 06_Q&A.ipynb                         # Consultas analíticas e respostas de negócio
-├── 06_Q&A_Dashboards.lvdash.json        # Definição dos dashboards no Databricks
-├── 06_Q&A_Dashboards.md                 # Prints dos dashboards
 ├── 10_catalogo-de-dados.md              # Catálogo oficial de dados
 ├── 11_Auto_avaliacao.md                 # Auto avaliação
 │
 ├── Dashboards/                          # Evidências visuais das análises
+│   ├──06_Q&A_Dashboards.lvdash.json     # Definição dos dashboards no Databricks
+│   └──06_Q&A_Dashboards.md              # Prints dos dashboards
 │
 ├── Documentos/                          # Documentação e evidências técnicas
 │   ├── Diagrama.png                     # Diagrama da modelagem de dados
