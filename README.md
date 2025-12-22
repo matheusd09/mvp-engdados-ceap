@@ -2,7 +2,7 @@
 ## Transparência e análise de gastos públicos - CEAP
 
 Este repositório contém o **MVP da Sprint de Engenharia de Dados** da turma de **Especialização em Ciência de Dados e Analytics — PUC-Rio**, utilizando dados públicos e abertos da **Cota para o Exercício da Atividade Parlamentar (CEAP)** para criar um pipeline de ponta a ponta, para análises precisas baseadas em dados:
->#####`(busca → coleta → modelagem → carga → análise)`
+>##### `(busca → coleta → modelagem → carga → análise)`
 
 - **Tema:** Transparência e análise de gastos públicos (CEAP)  
 - **Plataforma:** Databricks Free Edition (Delta Lake + Spark + SQL + Dashboards)  
